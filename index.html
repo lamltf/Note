@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Lịch Thông Báo</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; background-color: #f4f7f6; color: #333; }
+        h1 { text-align: center; color: #2c3e50; }
+        .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; }
+        label { font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+        input, textarea { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        button { background: #3498db; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        button:hover { background: #2980b9; }
+        .btn-danger { background: #e74c3c; padding: 5px 10px; font-size: 12px; }
+        .btn-danger:hover { background: #c0392b; }
+        .task-item { background: #e8f4f8; padding: 15px; border-left: 4px solid #3498db; border-radius: 4px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .task-info p { margin: 5px 0; font-size: 14px; }
+        .json-output { width: 100%; height: 150px; font-family: monospace; font-size: 12px; margin-top: 10px; resize: vertical; }
+    </style>
+</head>
+<body>
+
+    <h1>📅 Quản Lý Task Thông Báo</h1>
+
+    <div class="card">
+        <h3>➕ Thêm Task Mới</h3>
+        <form id="taskForm">
+            <div class="form-group">
+                <label>Ngày bắt đầu tính chu kỳ:</label>
+                <input type="date" id="startDate" required>
+            </div>
+            <div class="form-group">
+                <label>Chu kỳ (Số ngày lặp lại):</label>
+                <input type="number" id="cycleLength" min="1" placeholder="Ví dụ: 28" required>
+            </div>
+            <div class="form-group">
+                <label>Nội dung thông báo gửi vào Discord:</label>
+                <textarea id="message" rows="3" placeholder="Nhập lời nhắn..." required></textarea>
+            </div>
+            <button type="submit">Lưu Task</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>📋 Danh sách Task hiện tại</h3>
+        <div id="taskList"></div>
+    </div>
+
+    <div class="card">
+        <h3>🛠️ Xuất cấu hình (Bắt buộc)</h3>
+        <p style="font-size: 14px; color: #666;">Web tĩnh không thể tự lưu lên GitHub. Hãy copy đoạn mã dưới đây và dán đè vào file <strong>config.json</strong> trên GitHub của bạn.</p>
+        <button type="button" id="btnCopy" onclick="copyJSON()">📋 Copy JSON</button>
+        <textarea id="jsonOutput" class="json-output" readonly></textarea>
+    </div>
+
+    <script>
+        let tasks = [];
+
+        // Lấy dữ liệu ban đầu từ config.json khi load trang
+        fetch('config.json')
+            .then(res => res.json())
+            .then(data => {
+                tasks = data;
+                renderTasks();
+                updateJSONOutput();
+            })
+            .catch(err => console.error('Không tìm thấy config.json, bắt đầu với danh sách trống.'));
+
+        // Xử lý form thêm task
+        document.getElementById('taskForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newTask = {
+                id: Date.now(), // Tạo ID ngẫu nhiên bằng thời gian
+                startDate: document.getElementById('startDate').value,
+                cycleLength: parseInt(document.getElementById('cycleLength').value),
+                message: document.getElementById('message').value
+            };
+            tasks.push(newTask);
+            renderTasks();
+            updateJSONOutput();
+            this.reset(); // Xóa trắng form
+        });
+
+        // Xóa task
+        function deleteTask(id) {
+            tasks = tasks.filter(task => task.id !== id);
+            renderTasks();
+            updateJSONOutput();
+        }
+
+        // Hiển thị danh sách task
+        function renderTasks() {
+            const list = document.getElementById('taskList');
+            list.innerHTML = '';
+            if (tasks.length === 0) {
+                list.innerHTML = '<p style="color: #888; font-style: italic;">Chưa có task nào.</p>';
+                return;
+            }
+            tasks.forEach(task => {
+                const item = document.createElement('div');
+                item.className = 'task-item';
+                item.innerHTML = `
+                    <div class="task-info">
+                        <p><strong>Ngày bắt đầu:</strong> ${task.startDate}</p>
+                        <p><strong>Chu kỳ:</strong> ${task.cycleLength} ngày</p>
+                        <p><strong>Nội dung:</strong> ${task.message}</p>
+                    </div>
+                    <button class="btn-danger" onclick="deleteTask(${task.id})">Xóa</button>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        // Cập nhật textarea JSON
+        function updateJSONOutput() {
+            document.getElementById('jsonOutput').value = JSON.stringify(tasks, null, 2);
+        }
+
+        // Copy vào clipboard
+        function copyJSON() {
+            const copyText = document.getElementById("jsonOutput");
+            copyText.select();
+            document.execCommand("copy");
+            alert("Đã copy mã JSON! Giờ hãy lên GitHub dán đè vào file config.json nhé.");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1715500000000,
+    "startDate": "2026-05-12",
+    "cycleLength": 28,
+    "message": "Báo động đỏ! 🚨 Chuẩn bị trà sữa!"
+  },
+  {
+    "id": 1715500000001,
+    "startDate": "2026-05-15",
+    "cycleLength": 30,
+    "message": "Nhắc nhở đóng tiền mạng tháng này nha bro! 💸"
+  }
+]
