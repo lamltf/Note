@@ -8,167 +8,120 @@
     <style>
         body {
             font-family: 'Quicksand', sans-serif;
-            background-color: #ffeef2; /* Nền hồng pastel siêu nhạt */
+            background-color: #fff0f3;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
         }
 
-        /* Khung hiển thị mô phỏng màn hình điện thoại */
         .app-container {
             width: 100%;
-            max-width: 480px; /* Chuẩn kích thước mobile */
+            max-width: 480px;
             background-color: #ffffff;
             min-height: 100vh;
-            padding: 30px 20px 50px;
+            padding: 40px 20px;
             box-sizing: border-box;
-            box-shadow: 0 0 30px rgba(255, 182, 193, 0.3);
+            box-shadow: 0 0 20px rgba(255, 174, 185, 0.2);
         }
 
-        /* Header */
         h1 {
             text-align: center;
-            color: #ff6b8b;
+            color: #ff4d6d;
             font-weight: 700;
-            font-size: 28px;
+            font-size: 26px;
             margin-bottom: 5px;
-            margin-top: 10px;
         }
+
         .subtitle {
             text-align: center;
-            color: #ffa6b9;
+            color: #ff8fa3;
             font-size: 14px;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             font-weight: 600;
         }
 
-        /* Ô nhập Webhook bảo mật */
-        .webhook-box {
-            background: #fff5f7;
-            padding: 16px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            border: 2px dashed #ffb6c1;
-        }
-        .webhook-box label {
-            font-weight: 700;
-            font-size: 14px;
-            color: #ff6b8b;
-            display: block;
-            margin-bottom: 10px;
-        }
-        .webhook-box input {
-            width: 100%;
-            padding: 12px 15px;
-            border: none;
-            border-radius: 12px;
-            box-sizing: border-box;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 14px;
-            background: #ffffff;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-            outline: none;
-            color: #333;
-        }
-        .webhook-box input:focus {
-            box-shadow: 0 0 0 2px #ffb6c1;
-        }
-        .webhook-box small {
-            color: #999;
-            font-size: 12px;
-            display: block;
-            margin-top: 8px;
-            font-weight: 500;
-        }
-
-        /* Danh sách Card */
         .task-container {
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 20px;
         }
 
         .task-card {
             background: #ffffff;
             border-radius: 24px;
             padding: 20px;
-            box-shadow: 0 8px 20px rgba(255, 182, 193, 0.2);
-            border: 1px solid #ffeaf0;
+            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.1);
+            border: 1px solid #ffe5e9;
             position: relative;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
             transition: transform 0.2s;
         }
 
-        /* Tem phân loại (Badge) góc phải */
-        .task-badge {
-            position: absolute;
-            top: 0;
-            right: 0;
+        /* Phần đếm ngược nổi bật */
+        .countdown-badge {
+            background: linear-gradient(135deg, #ff758f 0%, #ff4d6d 100%);
             color: white;
-            padding: 6px 14px;
-            border-bottom-left-radius: 16px;
-            font-size: 12px;
+            padding: 10px 18px;
+            border-radius: 18px;
+            text-align: center;
+            margin-bottom: 15px;
+            align-self: flex-start;
+            box-shadow: 0 4px 12px rgba(255, 77, 109, 0.3);
+        }
+
+        .countdown-number {
+            font-size: 20px;
             font-weight: 700;
         }
-        .badge-cycle { background: linear-gradient(135deg, #ff9a9e 0%, #ff6a88 100%); }
-        .badge-yearly { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: #006b52;}
 
-        .task-detail {
-            font-size: 15px;
-            color: #555;
-            margin: 10px 0;
+        .countdown-text {
+            font-size: 12px;
             font-weight: 600;
-        }
-        .task-detail span {
-            display: inline-block;
-            width: 30px;
+            opacity: 0.9;
         }
 
-        /* Box lời nhắn */
-        .message-box {
-            background: #fff8fa;
-            padding: 14px;
-            border-radius: 16px;
-            margin-top: 15px;
-            color: #d8436e;
+        .task-info {
             font-size: 14px;
-            line-height: 1.5;
-            border-left: 4px solid #ff7b9c;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .task-info strong {
+            color: #ff4d6d;
+        }
+
+        .message-box {
+            background: #fff5f6;
+            padding: 15px;
+            border-radius: 18px;
+            margin-top: 10px;
+            color: #c9184a;
+            font-size: 14px;
+            line-height: 1.6;
+            border-left: 5px solid #ffb3c1;
             font-weight: 500;
         }
 
-        /* Nút Test Kute */
-        .btn-test {
-            width: 100%;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            color: #d6336c;
-            border: none;
-            padding: 14px;
-            border-radius: 16px;
-            font-weight: 700;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 18px;
-            box-shadow: 0 4px 12px rgba(255, 154, 158, 0.4);
-            transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Hiệu ứng nảy */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-test:active {
-            transform: scale(0.95);
-            box-shadow: 0 2px 6px rgba(255, 154, 158, 0.4);
-        }
-
-        /* Trạng thái tải/rỗng */
         .empty-state {
             text-align: center;
-            color: #b5b5b5;
+            color: #ffb3c1;
+            margin-top: 50px;
             font-weight: 600;
-            margin-top: 40px;
+        }
+
+        /* Hiệu ứng cho ngày hôm nay */
+        .today-special {
+            border: 2px solid #ff4d6d;
+            background: #fff0f3;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
@@ -176,105 +129,86 @@
 
     <div class="app-container">
         <h1>🌸 Lịch Yêu Thương</h1>
-        <div class="subtitle">Không bao giờ quên những ngày quan trọng ✨</div>
-
-        <div class="webhook-box">
-            <label>🔗 Trạm nối Discord (Nhập để Test)</label>
-            <input type="password" id="webhookInput" placeholder="Dán link Webhook vào đây nhé...">
-            <small>🔒 Dữ liệu bảo mật tuyệt đối, chỉ lưu trên điện thoại này.</small>
-        </div>
+        <div class="subtitle">Cùng chờ đợi những điều ngọt ngào ✨</div>
 
         <div id="taskList" class="task-container">
-            <p class="empty-state">Đang rinh dữ liệu về...</p>
+            <p class="empty-state">Đang xem lịch...</p>
         </div>
     </div>
 
     <script>
-        const savedWebhook = localStorage.getItem('discord_webhook');
-        if (savedWebhook) {
-            document.getElementById('webhookInput').value = savedWebhook;
+        function calculateDaysRemaining(task) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const startDate = new Date(task.startDate);
+            startDate.setHours(0, 0, 0, 0);
+
+            if (task.type === 'yearly') {
+                // Tính cho ngày hàng năm
+                let nextDate = new Date(today.getFullYear(), startDate.getMonth(), startDate.getDate());
+                if (nextDate < today) {
+                    nextDate.setFullYear(today.getFullYear() + 1);
+                }
+                const diffTime = nextDate - today;
+                return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            } else {
+                // Tính theo chu kỳ
+                const diffTime = today - startDate;
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays < 0) return Math.abs(diffDays); // Chưa tới ngày bắt đầu lần đầu
+                
+                const remainder = diffDays % task.cycleLength;
+                return remainder === 0 ? 0 : task.cycleLength - remainder;
+            }
         }
 
-        document.getElementById('webhookInput').addEventListener('input', function(e) {
-            localStorage.setItem('discord_webhook', e.target.value);
-        });
-
         fetch('config.json')
-            .then(res => {
-                if (!res.ok) throw new Error("Không tìm thấy file config.json");
-                return res.json();
-            })
+            .then(res => res.json())
             .then(tasks => {
                 const list = document.getElementById('taskList');
                 list.innerHTML = ''; 
 
                 if (tasks.length === 0) {
-                    list.innerHTML = '<p class="empty-state">Hiện tại chưa có sự kiện nào cả 🌵</p>';
+                    list.innerHTML = '<p class="empty-state">Chưa có sự kiện nào được lưu 🎈</p>';
                     return;
                 }
 
                 tasks.forEach(task => {
+                    const daysLeft = calculateDaysRemaining(task);
                     const card = document.createElement('div');
                     card.className = 'task-card';
                     
-                    const isYearly = task.type === 'yearly';
-                    const badgeClass = isYearly ? 'badge-yearly' : 'badge-cycle';
-                    const badgeText = isYearly ? 'Hàng năm' : 'Chu kỳ';
-                    const cycleText = isYearly ? 'Mỗi năm một lần' : `Lặp lại mỗi ${task.cycleLength} ngày`;
+                    let countdownHTML = '';
+                    if (daysLeft === 0) {
+                        card.classList.add('today-special');
+                        countdownHTML = `<div class="countdown-badge">
+                            <span class="countdown-number">🌟 HÔM NAY 🌟</span>
+                        </div>`;
+                    } else {
+                        countdownHTML = `<div class="countdown-badge">
+                            <span class="countdown-text">Còn</span>
+                            <span class="countdown-number">${daysLeft}</span>
+                            <span class="countdown-text">ngày nữa</span>
+                        </div>`;
+                    }
 
                     card.innerHTML = `
-                        <div class="task-badge ${badgeClass}">${badgeText}</div>
-                        <div class="task-detail"><span>🗓️</span> <strong>Bắt đầu:</strong> ${task.startDate}</div>
-                        <div class="task-detail"><span>⏳</span> <strong>Lịch trình:</strong> ${cycleText}</div>
+                        ${countdownHTML}
+                        <div class="task-info">🗓️ Ngày gốc: <strong>${task.startDate}</strong></div>
+                        <div class="task-info">⏳ Chế độ: <strong>${task.type === 'yearly' ? 'Hàng năm' : 'Chu kỳ ' + task.cycleLength + ' ngày'}</strong></div>
                         
                         <div class="message-box">
                             💌 ${task.message}
                         </div>
-
-                        <button class="btn-test" onclick="sendTestMessage('${encodeURIComponent(task.message)}')">
-                            🚀 Gửi thử thông báo
-                        </button>
                     `;
                     list.appendChild(card);
                 });
             })
             .catch(err => {
-                console.error(err);
-                document.getElementById('taskList').innerHTML = 
-                    '<p class="empty-state" style="color: #ff6b8b;">⚠️ Úi! Không tải được lịch. Hãy kiểm tra lại file config nhé!</p>';
+                document.getElementById('taskList').innerHTML = '<p class="empty-state">Lỗi tải dữ liệu rồi bác ơi! 😭</p>';
             });
-
-        function sendTestMessage(encodedMessage) {
-            const webhookUrl = document.getElementById('webhookInput').value.trim();
-            
-            if (!webhookUrl) {
-                alert("Bạn dán Discord Webhook URL vào ô bên trên trước đã nhé! 🌸");
-                document.getElementById('webhookInput').focus();
-                return;
-            }
-
-            const message = decodeURIComponent(encodedMessage);
-            const payload = {
-                content: "✨ **[DING DONG - TEST TỪ APP]** ✨\n" + message
-            };
-
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            })
-            .then(res => {
-                if (res.ok) {
-                    alert("✅ Bíp bíp! Đã bắn thông báo vào Discord!");
-                } else {
-                    alert("❌ Lỗi rồi! Bạn kiểm tra lại đường link Webhook xem sao nhé.");
-                }
-            })
-            .catch(err => {
-                alert("❌ Mất mạng rồi! Không kết nối được tới Discord.");
-                console.error(err);
-            });
-        }
     </script>
 
 </body>
