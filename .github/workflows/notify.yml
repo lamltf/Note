@@ -1,0 +1,24 @@
+name: Check Date and Notify Discord
+
+on:
+  schedule:
+    # Hẹn giờ chạy vào 00:00 UTC (Tương đương 7:00 sáng giờ Việt Nam)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Nút test thủ công
+
+jobs:
+  run-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lấy mã nguồn
+        uses: actions/checkout@v3
+
+      - name: Thiết lập Node.js để chạy script
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Chạy script kiểm tra
+        env:
+          DISCORD_WEBHOOK_URL: 'https://discord.com/api/webhooks/1503681075015319579/GiP2nbAT5c5DJxDvsSQEKbcDjWq_Ua5Nd3jv1JwQEw3Qplo2LH3Y8r_nn1TYFSaW5VhG'
+        run: node check_date.js
